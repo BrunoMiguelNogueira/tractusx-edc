@@ -7,10 +7,15 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - name: Create Release branch
+        run: git checkout -b ye
 
-      - name: Update version and charts
-        uses: actions/checkout@v5
+      - name: Version and Chart Updates
+        uses: ./.github/actions/update-version-and-charts
         with:
           version: "0.15.0"
           bump_version: "false"
+
+      - name: Push new branch
+        run: git push origin ye
