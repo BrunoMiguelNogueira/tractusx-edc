@@ -58,12 +58,12 @@ runs:
       shell: bash
       run: |-
         sed -i  's/version=.*/version=${{ steps.resolver.outputs.version }}/g' gradle.properties
-    - name: Commit changes
-      id: make-commit
-      shell: bash
-      run: |
-        git add .
-        git config user.name "eclipse-tractusx-bot"
-        git config user.email "tractusx-bot@eclipse.org"
-        git commit --message "Prepare release ${{ inputs.version }}"
-        echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+#    - name: Commit changes
+#      id: make-commit
+#      shell: bash
+#      run: |
+#        git add .
+#        git config user.name "eclipse-tractusx-bot"
+#        git config user.email "tractusx-bot@eclipse.org"
+#        git commit --message "Prepare release ${{ inputs.version }}"
+#        echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
