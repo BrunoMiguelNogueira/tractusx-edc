@@ -88,6 +88,6 @@ See [LICENSE](https://github.com/eclipse-tractusx/tractusx-edc/blob/main/LICENSE
 
 [snapshot-shield]: https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2Feclipse-tractusx%2Ftractusx-edc%2Fmain%2Fgradle.properties&search=%5Eversion%3D%28.*%29%24&replace=%241&flags=m&label=snapshot&style=for-the-badge
 
-[snapshotfork-shield]: https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbrunomiguelnogueira%2Ftractusx-edc%2Fmain%2Fgradle.properties&search=%5Eversion%3D%28.*%29%24&replace=%241&flags=m&label=snapshotfork&style=for-the-badge?event=test.yml
+[snapshotfork-shield]: https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2Fbrunomiguelnogueira%2Ftractusx-edc%2Fmain%2Fgradle.properties&search=%5Eversion%3D%28.*%29%24&replace=%241&flags=m&label=snapshotfork&style=for-the-badge?
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/brunomiguelnogueira/tractusx-edc/test.yml)
