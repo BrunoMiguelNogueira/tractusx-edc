@@ -1,0 +1,12 @@
+name: testBRuno.yml
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update version and charts
+        uses: ./  # or reference your action repo
+        with:
+          version: "0.15.0"
+          bump_version: "false"
