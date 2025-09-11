@@ -1,6 +1,7 @@
 name: test.yml
 on:
   workflow_run:
+    workflows: [ "Generate DEPENDENCIES file and publish to GitHub pages" ]
     branches:
       - main
 jobs:
