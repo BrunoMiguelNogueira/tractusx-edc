@@ -10,20 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Create Release branch
-        run: git checkout -b yeeeeeeeeeeeeeeee
-
-      - name: Version and Chart Updates
-        uses: ./.github/actions/update-version-and-charts
-        with:
-          version: "0.24.0"
-          bump_version: "false"
-
-      - name: Push new branch
-        run: git push origin yeeeeeeeeeeeeeeee:main
-
-      - uses: actions/checkout@v5
-      - name: Create Release branch
-        run: git checkout -b kanyeeeeeeeeeeee
+        run: git checkout -b yeeeeeeeeeeeeeeeeeeeee
 
       - name: Version and Chart Updates
         uses: ./.github/actions/update-version-and-charts
@@ -32,4 +19,4 @@ jobs:
           bump_version: "false"
 
       - name: Push new branch
-        run: git push origin kanyeeeeeeeeeeee:main
+        run: git push origin yeeeeeeeeeeeeeeeeeeeee:main
