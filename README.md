@@ -92,4 +92,5 @@ See [LICENSE](https://github.com/eclipse-tractusx/tractusx-edc/blob/main/LICENSE
 
 
 
+
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/brunomiguelnogueira/tractusx-edc/test.yml)
