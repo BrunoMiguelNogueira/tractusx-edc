@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Create Release branch
-        run: git checkout -b ye
+        run: git checkout -b yee
 
       - name: Version and Chart Updates
         uses: ./.github/actions/update-version-and-charts
