@@ -58,10 +58,6 @@ runs:
       shell: bash
       run: |-
         sed -i  's/version=.*/version=${{ steps.resolver.outputs.version }}/g' gradle.properties
-    - name: Update badge URL
-      shell: bash
-      run: |
-        sed -i 's|cb=[0-9]*|${{ steps.resolver.outputs.version }}|g' README.md
     - name: Commit changes
       id: make-commit
       shell: bash
