@@ -15,7 +15,7 @@ jobs:
       - name: Version and Chart Updates
         uses: ./.github/actions/update-version-and-charts
         with:
-          version: "0.16.0"
+          version: "0.17.0"
           bump_version: "false"
 
       - name: Push new branch
