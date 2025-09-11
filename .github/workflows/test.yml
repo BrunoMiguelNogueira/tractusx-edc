@@ -1,4 +1,8 @@
-name: testBRuno.yml
+name: test.yml
+on:
+  workflow_run:
+    branches:
+      - main
 jobs:
   release:
     runs-on: ubuntu-latest
