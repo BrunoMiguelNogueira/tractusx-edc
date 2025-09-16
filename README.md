@@ -86,4 +86,4 @@ See [LICENSE](https://github.com/eclipse-tractusx/tractusx-edc/blob/main/LICENSE
 [release-url]: https://github.com/eclipse-tractusx/tractusx-edc/releases
 
 
-[fork]:https://img.shields.io/badge/latest--snapshot-UploadError-red
+[fork]:https://img.shields.io/badge/latest--snapshot-UploadError-red?style=for-the-badge
