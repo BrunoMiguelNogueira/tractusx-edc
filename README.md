@@ -3,9 +3,10 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Apache 2.0 License][license-shield]][license-url]
-[![Latest Release][release-shield]][release-url]
 
-![fork][fork]
+[![Latest Release][release-shield]][release-url]
+[![Latest Snapshot][snapshot-shield]]()
+
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=eclipse-tractusx_tractusx-edc&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=eclipse-tractusx_tractusx-edc)
 
 Container images and deployments of the Eclipse Dataspace Components for the Tractus-X project.
@@ -85,5 +86,4 @@ See [LICENSE](https://github.com/eclipse-tractusx/tractusx-edc/blob/main/LICENSE
 
 [release-url]: https://github.com/eclipse-tractusx/tractusx-edc/releases
 
-
-[fork]:https://img.shields.io/badge/latest--snapshot-UploadError-red
+[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-Error-red?style=for-the-badge

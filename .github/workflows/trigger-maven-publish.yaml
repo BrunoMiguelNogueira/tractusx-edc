@@ -67,24 +67,8 @@ jobs:
 #      - name: Try to fail
 #        run: exit 1
 
-      - name: Commit changes
-        id: commit-update-gradleproperties
-        shell: bash
-        run: |
-          git pull
-          git add .
-          if git diff --cached --quiet; then 
-            echo "Same version as before"
-          else 
-            git config user.name "Bruno Nogueira"
-            git config user.email "7brunon@gmail.com"
-            git commit --message "Update snapshot version"
-            git push origin HEAD
-          fi
-
   update-snapshot-badge:
     name: 'Update Snapshot badge in README.md'
-    if: always()
     needs: maven-release
     permissions:
       contents: write
@@ -98,8 +82,8 @@ jobs:
           DATED="${{ inputs.dated }}"
           ESCAPED_VERSION="${VERSION//-/--}"
 
-          if [[ "$RESULT" == "success" && -n "$DATED" ]]; then
-            sed -i "s|^\[fork\]:.*|[fork]:https://img.shields.io/badge/latest--snapshot-$ESCAPED_VERSION?style=for-the-badge|" 'README.md'
+          if [ -n "$DATED" ]; then
+            sed -i "s|^\[snapshot-shield\]:.*|[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-$ESCAPED_VERSION-blue?style=for-the-badge|" 'README.md'
           fi
 
       - name: Commit changes
