@@ -86,4 +86,4 @@ See [LICENSE](https://github.com/eclipse-tractusx/tractusx-edc/blob/main/LICENSE
 
 [release-url]: https://github.com/eclipse-tractusx/tractusx-edc/releases
 
-[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-777.7.7-blue?style=for-the-badge
+[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-777.777.777-blue?style=for-the-badge
