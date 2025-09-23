@@ -9,8 +9,17 @@ permissions:
 
 jobs:
   determine-version:
-    echo "7.7.7" >> "$GITHUB_OUTPUT"
-    echo "STABLE=true" >> "$GITHUB_OUTPUT"
+    name: "Determine snapshot version to be published"
+    runs-on: ubuntu-latest
+    outputs:
+      VERSION: ${{ steps.get-version.outputs.VERSION }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: "Get version"
+        id: get-version
+        run: |
+          echo "7.7.7" >> "$GITHUB_OUTPUT"
+          echo "STABLE=true" >> "$GITHUB_OUTPUT"
 
   update-version-and-charts:
     name: 'Update Snapshot badge in README.md'
