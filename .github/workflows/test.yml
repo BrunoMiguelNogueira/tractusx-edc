@@ -1,0 +1,24 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  determine-version:
+    echo "7.7.7" >> "$GITHUB_OUTPUT"
+    echo "STABLE=true" >> "$GITHUB_OUTPUT"
+
+  update-version-and-charts:
+    name: 'Update Snapshot badge in README.md'
+    permissions:
+      contents: write
+    needs: [ determine-version ]
+    uses: ./.github/workflows/trigger-update-badge.yml
+    secrets: inherit
+    with:
+      version: ${{ needs.determine-version.outputs.VERSION }}
+      stable: ${{ needs.determine-version.outputs.STABLE }}
