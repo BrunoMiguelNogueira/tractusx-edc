@@ -124,7 +124,7 @@ jobs:
     with:
       version: ${{ needs.determine-version.outputs.VERSION }}
 
-  update-version-and-charts:
+  update-snapshot-badge:
     name: 'Update Snapshot badge in README.md'
     permissions:
       contents: write
