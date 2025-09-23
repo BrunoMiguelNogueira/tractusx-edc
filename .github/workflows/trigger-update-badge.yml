@@ -31,8 +31,8 @@ jobs:
         run: |
           VERSION="${{ inputs.version }}"
           ESCAPED_VERSION="${VERSION//-/--}"
-          UPDATE-BADGE="${{ inputs.update-badge }}"
-          if [ -n "$UPDATE-BADGE" ]; then
+          UPDATE_BADGE="${{ inputs.update-badge }}"
+          if [ -n "$UPDATE_BADGE" ]; then
             sed -i "s|^\[snapshot-shield\]:.*|[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-$ESCAPED_VERSION-blue?style=for-the-badge|" 'README.md'
           fi
       - name: Commit changes
