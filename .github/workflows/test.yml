@@ -18,7 +18,7 @@ jobs:
       - name: "Get version"
         id: get-version
         run: |
-          echo "VERSION=117.7.7" >> "$GITHUB_OUTPUT"
+          echo "VERSION=27.7.7" >> "$GITHUB_OUTPUT"
 #          echo "STABLE=true" >> "$GITHUB_OUTPUT"
 
   update-version-and-charts:

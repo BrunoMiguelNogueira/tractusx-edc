@@ -32,7 +32,7 @@ jobs:
           VERSION="${{ inputs.version }}"
           ESCAPED_VERSION="${VERSION//-/--}"
           STABLE="${{ inputs.stable }}"
-          if [ -n "STABLE" ]; then
+          if [ -n "$STABLE" ]; then
             sed -i "s|^\[snapshot-shield\]:.*|[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-$ESCAPED_VERSION-blue?style=for-the-badge|" 'README.md'
           fi
       - name: Commit changes
