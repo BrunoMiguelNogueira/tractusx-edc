@@ -18,8 +18,8 @@ jobs:
       - name: "Get version"
         id: get-version
         run: |
-          echo "VERSION=7.7.7" >> "$GITHUB_OUTPUT"
-          echo "STABLE=true" >> "$GITHUB_OUTPUT"
+          echo "VERSION=117.7.7" >> "$GITHUB_OUTPUT"
+#          echo "STABLE=true" >> "$GITHUB_OUTPUT"
 
   update-version-and-charts:
     name: 'Update Snapshot badge in README.md'
