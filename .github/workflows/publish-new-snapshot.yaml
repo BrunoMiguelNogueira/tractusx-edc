@@ -73,6 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.get-version.outputs.VERSION }}
+      UPDATE-BADGE: ${{ steps.get-version.outputs.UPDATE-BADGE }}
     steps:
       - uses: actions/checkout@v5
       - name: "Get version"
@@ -83,9 +84,10 @@ jobs:
           
           if [[ "${{ github.event.workflow_run.event }}" == "schedule" || "${{ inputs.dated_snapshot }}" == "true" ]]; then
             echo "VERSION=$RELEASE_VERSION_MAJOR.$RELEASE_VERSION_MINOR.$RELEASE_VERSION_PATCH-$(date +"%Y%m%d")-SNAPSHOT" >> "$GITHUB_OUTPUT"
-            echo "STABLE=true" >> "$GITHUB_OUTPUT"
+            echo "UPDATE-BADGE=true" >> "$GITHUB_OUTPUT"
           else
             echo "VERSION=$RELEASE_VERSION_MAJOR.$RELEASE_VERSION_MINOR.$RELEASE_VERSION_PATCH-SNAPSHOT" >> "$GITHUB_OUTPUT"
+          echo "UPDATE-BADGE=" >> "$GITHUB_OUTPUT"
           fi
 
   publish-docker-images:
@@ -132,4 +134,4 @@ jobs:
     secrets: inherit
     with:
         version: ${{ needs.determine-version.outputs.VERSION }}
-        stable: ${{ needs.determine-version.outputs.STABLE }}
+        update-badge: ${{ needs.determine-version.outputs.UPDATE-BADGE }}

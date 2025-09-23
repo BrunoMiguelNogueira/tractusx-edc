@@ -5,7 +5,7 @@ on:
       version:
         required: true
         description: 'a semver string denoting the version'
-      stable:
+      update-badge:
         type: string
         required: false
         description: 'notEmpty if is a versioned snapshot'
@@ -15,7 +15,7 @@ on:
         type: string
         required: true
         description: 'a semver string denoting the version'
-      stable:
+      update-badge:
         type: string
         required: false
         description: 'notEmpty if is a versioned snapshot'
@@ -31,8 +31,8 @@ jobs:
         run: |
           VERSION="${{ inputs.version }}"
           ESCAPED_VERSION="${VERSION//-/--}"
-          STABLE="${{ inputs.stable }}"
-          if [ -n "$STABLE" ]; then
+          UPDATE-BADGE="${{ inputs.update-badge }}"
+          if [ -n "$UPDATE-BADGE" ]; then
             sed -i "s|^\[snapshot-shield\]:.*|[snapshot-shield]:https://img.shields.io/badge/latest--snapshot-$ESCAPED_VERSION-blue?style=for-the-badge|" 'README.md'
           fi
       - name: Commit changes
