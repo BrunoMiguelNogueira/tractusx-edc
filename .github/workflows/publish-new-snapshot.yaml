@@ -112,7 +112,6 @@ jobs:
     secrets: inherit
     with:
       version: ${{ needs.determine-version.outputs.VERSION }}
-      stable: ${{ needs.determine-version.outputs.STABLE }}
 
   publish-openapi-to-gh-pages:
     name: "Publish OpenAPI UI spec GitHub Pages"
@@ -123,3 +122,14 @@ jobs:
     secrets: inherit
     with:
       version: ${{ needs.determine-version.outputs.VERSION }}
+
+  update-version-and-charts:
+    name: 'Update Snapshot badge in README.md'
+    permissions:
+      contents: write
+    needs: [determine-version]
+    uses: ./.github/workflows/trigger-update-badge.yml
+    secrets: inherit
+    with:
+        version: ${{ needs.determine-version.outputs.VERSION }}
+        stable: ${{ needs.determine-version.outputs.STABLE }}
