@@ -87,7 +87,6 @@ jobs:
             echo "UPDATE-BADGE=true" >> "$GITHUB_OUTPUT"
           else
             echo "VERSION=$RELEASE_VERSION_MAJOR.$RELEASE_VERSION_MINOR.$RELEASE_VERSION_PATCH-SNAPSHOT" >> "$GITHUB_OUTPUT"
-          echo "UPDATE-BADGE=" >> "$GITHUB_OUTPUT"
           fi
 
   publish-docker-images:
