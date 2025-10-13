@@ -23,8 +23,6 @@ name: "Generate DEPENDENCIES file and publish to GitHub pages"
 on:
   workflow_dispatch:
   push:
-    branches:
-
 permissions:
   contents: write
 
