@@ -29,8 +29,6 @@ on:
   workflow_run:
     workflows: [ "Run-All-Tests" ]
     branches:
-      - main
-      - release/*
     types:
       - completed
   workflow_dispatch:

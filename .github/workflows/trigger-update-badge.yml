@@ -49,15 +49,14 @@ jobs:
     steps:
       - name: Check for updated version
         run: |
-          VERSION="${{ inputs.version }}"
-          ESCAPED_VERSION="${VERSION//-/--}"
           UPDATE_BADGE="${{ inputs.update-badge }}"
           if [[ -z "$UPDATE_BADGE" ]]; then
               echo "No badge update requested, skipping."
               exit 0
           fi
-
-      - name: Update Gist
+          VERSION="${{ inputs.version }}"
+          ESCAPED_VERSION="${VERSION//-/--}"
+          echo "Determined version: $VERSION (escaped: $ESCAPED_VERSION)"
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST }}
