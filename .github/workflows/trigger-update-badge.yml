@@ -60,7 +60,7 @@ jobs:
       - name: Update Gist
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
-          auth: ${{ secrets.GIST_SECRET }}
+          auth: ${{ secrets.GIST }}
           gistID: <261806a981f7a130e63e628a377d93be>
           filename: latest_version.json
           label: $ESCAPED_VERSION
