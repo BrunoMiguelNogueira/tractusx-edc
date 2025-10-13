@@ -48,19 +48,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check for updated version
+        id: check-version
         run: |
           UPDATE_BADGE="${{ inputs.update-badge }}"
           if [[ -z "$UPDATE_BADGE" ]]; then
               echo "No badge update requested, skipping."
+              echo "should-update=false" >> $GITHUB_OUTPUT
               exit 0
           fi
           VERSION="${{ inputs.version }}"
           ESCAPED_VERSION="${VERSION//-/--}"
           echo "Determined version: $VERSION (escaped: $ESCAPED_VERSION)"
+          echo "should-update=true" >> $GITHUB_OUTPUT
+          echo "escaped-version=$ESCAPED_VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update badge
+        if: steps.check-version.outputs.should-update == 'true'
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST }}
-          gistID: <261806a981f7a130e63e628a377d93be>
+          gistID: 261806a981f7a130e63e628a377d93be
           filename: latest_version.json
-          label: $ESCAPED_VERSION
-          message: "Update snapshot badge to $VERSION"
+          label: ${{ steps.check-version.outputs.escaped-version }}
+          message: "Update snapshot badge to ${{ steps.check-version.outputs.version }}"
