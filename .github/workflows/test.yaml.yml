@@ -18,7 +18,7 @@ jobs:
         id: get-version
         run: |
           
-          echo "VERSION=7ronaldo7-SUIIIIIII" >> "$GITHUB_OUTPUT"
+          echo "VERSION=7ronaldo7-SUUUUIIIIIII" >> "$GITHUB_OUTPUT"
           echo "STABLE=true" >> "$GITHUB_OUTPUT"
           
 
