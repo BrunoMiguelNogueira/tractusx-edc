@@ -18,7 +18,7 @@ jobs:
         id: get-version
         run: |
           
-          echo "VERSION=111.222.333-SNAPSHOT" >> "$GITHUB_OUTPUT"
+          echo "VERSION=7-SNAPSHOT" >> "$GITHUB_OUTPUT"
           echo "STABLE=true" >> "$GITHUB_OUTPUT"
           
 
