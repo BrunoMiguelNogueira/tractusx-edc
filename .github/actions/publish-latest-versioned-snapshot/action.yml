@@ -22,7 +22,7 @@
 
 
 ---
-name: "publish-latest-versioned-snapshot.yml"
+name: "publish-latest-versioned-snapshot"
 description: "publish the latest versioned snapshot file to GitHub Pages"
 inputs:
     version:

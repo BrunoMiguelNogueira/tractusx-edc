@@ -91,7 +91,7 @@ jobs:
 
   publish-docker-images:
     name: "Create Docker Images"
-    needs: [ secret-presence, determine-version]
+    needs: [ secret-presence, determine-version ]
     if: |
       needs.secret-presence.outputs.DOCKER_HUB_TOKEN
     permissions:
@@ -126,13 +126,15 @@ jobs:
 
   publish-latest-versioned-snapshot:
     name: "Publish latest versioned snapshot in GitHub Pages"
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     needs: [ determine-version ]
     if: ${{ needs.determine-version.outputs.DATED == 'true' }}
-    uses: ./.github/actions/publish-latest-versioned-snapshot
-    with:
-      version: ${{ needs.determine-version.outputs.VERSION }}
+    steps:
+      - uses: ./.github/actions/publish-latest-versioned-snapshot
+        with:
+          version: ${{ needs.determine-version.outputs.VERSION }}
 
 #  publish-latest-versioned-snapshot:
 #    name: "Publish latest versioned snapshot in GitHub Pages"
