@@ -37,7 +37,7 @@ jobs:
     permissions:
       contents: write
     needs: [ determine-version ]
-    if: needs.determine-version.outputs.DATED == 'true'
+    if: ${{ needs.determine-version.outputs.DATED == 'true' }}
     steps:
       - uses: ./.github/actions/publish-latest-versioned-snapshot
         with:
