@@ -130,19 +130,8 @@ jobs:
     permissions:
       contents: write
     needs: [ determine-version ]
-    if: ${{ needs.determine-version.outputs.DATED == 'true' }}
+    if: needs.determine-version.outputs.DATED == 'true'
     steps:
       - uses: ./.github/actions/publish-latest-versioned-snapshot
         with:
           version: ${{ needs.determine-version.outputs.VERSION }}
-
-#  publish-latest-versioned-snapshot:
-#    name: "Publish latest versioned snapshot in GitHub Pages"
-#    permissions:
-#      contents: write
-#    needs: [determine-version]
-#    if: ${{ needs.determine-version.outputs.DATED == 'true' }}
-#    uses: ./.github/workflows/publish-latest-versioned-snapshot.yml
-#    secrets: inherit
-#    with:
-#      version: ${{ needs.determine-version.outputs.VERSION }}
