@@ -21,13 +21,13 @@ jobs:
     steps:
       - name: Write version to latest-versioned-snapshot file
         run: |
-          mkdir -p latest-versioned-snapshot
+          mkdir -p ./public/latest-versioned-snapshot
           echo "${{ inputs.version }}" > latest-versioned-snapshot/latest-versioned-snapshot.txt
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./latest-versioned-snapshot
+          publish_dir: ./public/latest-versioned-snapshot
           destination_dir: ./misc
           keep_files: true
