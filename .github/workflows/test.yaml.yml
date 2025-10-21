@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       VERSION: ${{ steps.get-version.outputs.VERSION }}
-      STABLE: ${{ steps.get-version.outputs.STABLE }}
+      DATED: ${{ steps.get-version.outputs.DATED }}
     steps:
       - uses: actions/checkout@v5
       - name: "Get version"
@@ -19,7 +19,7 @@ jobs:
         run: |
           
           echo "VERSION=finalv3" >> "$GITHUB_OUTPUT"
-          echo "STABLE=true" >> "$GITHUB_OUTPUT"
+          echo "DATED=true" >> "$GITHUB_OUTPUT"
           
 
 #          IFS=.- read -r RELEASE_VERSION_MAJOR RELEASE_VERSION_MINOR RELEASE_VERSION_PATCH SNAPSHOT<<<$(grep "version" gradle.properties | awk -F= '{print $2}')
