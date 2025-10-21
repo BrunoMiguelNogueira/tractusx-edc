@@ -39,6 +39,7 @@ jobs:
     needs: [ determine-version ]
     if: ${{ needs.determine-version.outputs.DATED == 'true' }}
     steps:
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/publish-latest-versioned-snapshot
         with:
           version: ${{ needs.determine-version.outputs.VERSION }}
