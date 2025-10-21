@@ -40,7 +40,7 @@ runs:
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ env.GITHUB_TOKEN }}
         publish_dir: ./lvs
         destination_dir: ./misc
         keep_files: true
