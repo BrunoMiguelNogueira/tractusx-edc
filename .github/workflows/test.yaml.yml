@@ -18,7 +18,7 @@ jobs:
         id: get-version
         run: |
           
-          echo "VERSION=over?" >> "$GITHUB_OUTPUT"
+          echo "VERSION=maybe?" >> "$GITHUB_OUTPUT"
           echo "DATED=true" >> "$GITHUB_OUTPUT"
           
 
@@ -39,7 +39,6 @@ jobs:
     needs: [ determine-version ]
     if: ${{ needs.determine-version.outputs.DATED == 'true' }}
     steps:
-      - uses: actions/checkout@v5
       - uses: ./.github/actions/publish-latest-versioned-snapshot
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
