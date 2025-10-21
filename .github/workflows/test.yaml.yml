@@ -18,7 +18,7 @@ jobs:
         id: get-version
         run: |
           
-          echo "VERSION=sa.222sasa222" >> "$GITHUB_OUTPUT"
+          echo "VERSION=final" >> "$GITHUB_OUTPUT"
           echo "STABLE=true" >> "$GITHUB_OUTPUT"
           
 
