@@ -18,7 +18,7 @@ jobs:
         id: get-version
         run: |
           
-          echo "VERSION=finalv3" >> "$GITHUB_OUTPUT"
+          echo "VERSION=over?" >> "$GITHUB_OUTPUT"
           echo "DATED=true" >> "$GITHUB_OUTPUT"
           
 
