@@ -41,5 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/publish-latest-versioned-snapshot
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           version: ${{ needs.determine-version.outputs.VERSION }}
