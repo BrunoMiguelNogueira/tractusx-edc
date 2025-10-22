@@ -18,7 +18,7 @@ jobs:
         id: get-version
         run: |
           
-          echo "VERSION=broken?" >> "$GITHUB_OUTPUT"
+          echo "VERSION=broken??" >> "$GITHUB_OUTPUT"
           echo "DATED=true" >> "$GITHUB_OUTPUT"
   
 
