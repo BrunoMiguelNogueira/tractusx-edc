@@ -29,7 +29,7 @@ on:
   workflow_run:
     workflows: [ "Run-All-Tests" ]
     branches:
-      - main
+#      - main
       - release/*
     types:
       - completed

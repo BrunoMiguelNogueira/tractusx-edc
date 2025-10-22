@@ -1,0 +1,47 @@
+name: test.yaml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  determine-version:
+    name: "Determine snapshot version to be published"
+    runs-on: ubuntu-latest
+    outputs:
+      VERSION: ${{ steps.get-version.outputs.VERSION }}
+      DATED: ${{ steps.get-version.outputs.DATED }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: "Get version"
+        id: get-version
+        run: |
+          
+          echo "VERSION=broken?" >> "$GITHUB_OUTPUT"
+          echo "DATED=true" >> "$GITHUB_OUTPUT"
+  
+
+  #          IFS=.- read -r RELEASE_VERSION_MAJOR RELEASE_VERSION_MINOR RELEASE_VERSION_PATCH SNAPSHOT<<<$(grep "version" gradle.properties | awk -F= '{print $2}')
+
+  #          if [[ "${{ github.event.workflow_run.event }}" == "schedule" || "${{ inputs.dated_snapshot }}" == "true" ]]; then
+  #            echo "VERSION=$RELEASE_VERSION_MAJOR.$RELEASE_VERSION_MINOR.$RELEASE_VERSION_PATCH-$(date +"%Y%m%d")-SNAPSHOT" >> "$GITHUB_OUTPUT"
+  #            echo "STABLE=true" >> "$GITHUB_OUTPUT"
+  #          else
+  #            echo "VERSION=$RELEASE_VERSION_MAJOR.$RELEASE_VERSION_MINOR.$RELEASE_VERSION_PATCH-SNAPSHOT" >> "$GITHUB_OUTPUT"
+  #          fi
+
+  publish-latest-versioned-snapshot:
+    name: "Publish latest versioned snapshot in GitHub Pages"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: [ determine-version ]
+    if: ${{ needs.determine-version.outputs.DATED == 'true' }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/publish-latest-versioned-snapshot
+        with:
+          version: ${{ needs.determine-version.outputs.VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
