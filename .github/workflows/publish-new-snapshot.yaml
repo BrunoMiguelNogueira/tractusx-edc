@@ -91,7 +91,7 @@ jobs:
 
   publish-docker-images:
     name: "Create Docker Images"
-    needs: [ secret-presence, determine-version]
+    needs: [ secret-presence, determine-version ]
     if: |
       needs.secret-presence.outputs.DOCKER_HUB_TOKEN
     permissions:
