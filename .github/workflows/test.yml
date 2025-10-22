@@ -1,8 +1,12 @@
 name: test.yaml
 on:
-  push:
+  workflow_run:
+    workflows: [ "Run-All-Tests" ]
     branches:
       - main
+      - release/*
+    types:
+      - completed
 
 jobs:
 

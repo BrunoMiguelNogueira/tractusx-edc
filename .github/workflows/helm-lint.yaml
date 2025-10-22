@@ -24,7 +24,7 @@ name: "Lint helm charts"
 on:
   push:
     branches:
-#      - main
+      - main
       - releases
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'

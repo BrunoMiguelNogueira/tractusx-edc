@@ -28,7 +28,7 @@ on:
   workflow_run:
     workflows: [ "Publish Artefacts" ]
     branches:
-#      - main
+      - main
       - releases
       - release/*
       - hotfix/*
