@@ -28,6 +28,8 @@ on:
     branches:
       - main
       - release/*
+      - bruno/*
+    ## alla
   pull_request:
     paths-ignore:
       - docs/**
