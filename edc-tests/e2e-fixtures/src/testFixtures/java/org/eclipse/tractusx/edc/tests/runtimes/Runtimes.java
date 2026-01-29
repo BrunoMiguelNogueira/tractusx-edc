@@ -24,6 +24,7 @@ import org.eclipse.edc.junit.extensions.EmbeddedRuntime;
 import org.eclipse.edc.junit.extensions.RuntimeExtension;
 import org.eclipse.edc.protocol.spi.DefaultParticipantIdExtractionFunction;
 import org.eclipse.edc.spi.iam.AudienceResolver;
+import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.configuration.Config;
@@ -31,6 +32,9 @@ import org.eclipse.edc.spi.system.configuration.ConfigFactory;
 import org.eclipse.tractusx.edc.spi.identity.mapper.BdrsClient;
 import org.eclipse.tractusx.edc.tests.MockBdrsClient;
 import org.eclipse.tractusx.edc.tests.MockIdentityServiceExtension;
+import org.eclipse.tractusx.edc.tests.MockTokenValidationAction;
+import org.eclipse.tractusx.edc.tests.MockTokenValidationService;
+import org.eclipse.tractusx.edc.tests.MockVcIdentityService;
 import org.eclipse.tractusx.edc.tests.participant.TractusxParticipantBase;
 
 import java.util.function.Function;
@@ -56,7 +60,6 @@ public interface Runtimes {
                         .registerServiceMock(AudienceResolver.class, remoteMessage -> Result.success(remoteMessage.getCounterPartyAddress()))
                         .registerServiceMock(BdrsClient.class, new MockBdrsClient(bpnToDid, didToBpn))
                         .registerServiceMock(DefaultParticipantIdExtractionFunction.class, ct -> "id")
-//                        .registerServiceMock(PublicKeyResolver.class, new MockPublicKeyResolver())
                         .registerSystemExtension(ServiceExtension.class, new MockIdentityServiceExtension(participant.getBpn(), participant.getDid()))
         );
     }

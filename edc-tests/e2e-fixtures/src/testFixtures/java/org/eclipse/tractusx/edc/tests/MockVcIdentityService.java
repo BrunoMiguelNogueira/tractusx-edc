@@ -19,6 +19,7 @@
 
 package org.eclipse.tractusx.edc.tests;
 
+import com.apicatalog.ld.signature.algorithm.SignatureAlgorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.eclipse.edc.iam.decentralizedclaims.spi.validation.TokenValidationAction;
 import org.eclipse.edc.iam.verifiablecredentials.spi.model.CredentialSubject;
@@ -33,11 +34,19 @@ import org.eclipse.edc.spi.iam.VerificationContext;
 import org.eclipse.edc.spi.result.Result;
 import org.eclipse.edc.spi.types.TypeManager;
 
+import java.security.InvalidKeyException;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 import static java.lang.String.format;
+import static org.eclipse.edc.iam.decentralizedclaims.spi.SelfIssuedTokenConstants.PRESENTATION_TOKEN_CLAIM;
+import static org.eclipse.edc.jwt.spi.JwtRegisteredClaimNames.ISSUER;
 import static org.eclipse.edc.spi.result.Result.failure;
 
 /**
@@ -45,7 +54,7 @@ import static org.eclipse.edc.spi.result.Result.failure;
  * Please only use in testing scenarios!
  */
 public class MockVcIdentityService implements IdentityService {
-    
+
     private static final String BUSINESS_PARTNER_NUMBER_CLAIM = "BusinessPartnerNumber";
     private static final String VC_CLAIM = "vc";
     private final String businessPartnerNumber;
@@ -58,50 +67,74 @@ public class MockVcIdentityService implements IdentityService {
         this.did = did;
         this.tokenValidationAction = tokenValidationAction;
     }
-    
+
     @Override
     public Result<TokenRepresentation> obtainClientCredentials(String participantContextId, TokenParameters parameters) {
-        var credentials = List.of(membershipCredential(), dataExchangeGovernanceCredential());
-        var token = Map.of(VC_CLAIM, credentials);
-
         var tokenRepresentation = TokenRepresentation.Builder.newInstance()
-//                .token("{\"vc\":[{\"credentialSubject\":[{\"id\":\"did:web:CONSUMER\",\"holderIdentifier\":\"BPNL0000CONSUMER\"}],\"id\":null,\"type\":[\"VerifiableCredential\",\"MembershipCredential\"],\"issuer\":{\"id\":\"issuer\",\"additionalProperties\":{}},\"issuanceDate\":\"2026-01-22T15:50:57.822662Z\",\"expirationDate\":null,\"credentialStatus\":[],\"description\":null,\"name\":null,\"dataModelVersion\":\"V_1_1\",\"credentialSchema\":[]},{\"credentialSubject\":[{\"id\":\"did:web:CONSUMER\",\"holderIdentifier\":\"BPNL0000CONSUMER\",\"contractVersion\":\"1.0\"}],\"id\":null,\"type\":[\"VerifiableCredential\",\"DataExchangeGovernanceCredential\"],\"issuer\":{\"id\":\"issuer\",\"additionalProperties\":{}},\"issuanceDate\":\"2026-01-22T15:50:57.822673Z\",\"expirationDate\":null,\"credentialStatus\":[],\"description\":null,\"name\":null,\"dataModelVersion\":\"V_1_1\",\"credentialSchema\":[]}]}")
-                .token("eyJhbGciOiJFUzI1NksiLCJraWQiOiJkaWQ6d2ViOnBvcnRhbC1iYWNrZW5kLmJldGEuY29maW5pdHkteC5jb206YXBpOmFkbWluaXN0cmF0aW9uOnN0YXRpY2RhdGE6ZGlkOkJQTkwwMDAwMDAwMDBJU1kja2V5cy1hZWU3MDg5MS1hMDhiLTRjOGMtOWZiMi03ZTY5YjI0OGRkZDQiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJkaWQ6d2ViOnBvcnRhbC1iYWNrZW5kLmJldGEuY29maW5pdHkteC5jb206YXBpOmFkbWluaXN0cmF0aW9uOnN0YXRpY2RhdGE6ZGlkOkJQTkwwMDAwMDAwMDBJU1kiLCJleHAiOjE3NjkxMDIzMzQsImlhdCI6MTc2OTA5ODczNCwiaXNzIjoiZGlkOndlYjpwb3J0YWwtYmFja2VuZC5iZXRhLmNvZmluaXR5LXguY29tOmFwaTphZG1pbmlzdHJhdGlvbjpzdGF0aWNkYXRhOmRpZDpCUE5MMDAwMDAwMDAwSVNZIiwianRpIjoiMzY0YmM4OTctNGRkNS00YWVmLWJiZjItMDhhOGMyNDc5OTk0Iiwic3ViIjoiZGlkOndlYjpwb3J0YWwtYmFja2VuZC5iZXRhLmNvZmluaXR5LXguY29tOmFwaTphZG1pbmlzdHJhdGlvbjpzdGF0aWNkYXRhOmRpZDpCUE5MMDAwMDAwMDAwSVNZIiwidG9rZW4iOiIyYTdmYzNiZWE1MmYxZWE0MWEwZjk0NTRmNjAxN2MxN2IzNDI3YTgxZWIyNDM0NzIyZDVlOWU2MjkyMmVhZmMzIn0.UfK0bM0E2p72zPKyKK3qkWdhi6YCIOfUu4wFa-427u2ZCUE6fkIuWmG-K3J7HO42tCnEQatmUwuppRI-BQ08oA")
+                .token(getTestToken(parameters.getStringClaim("aud")))
                 .build();
         return Result.success(tokenRepresentation);
     }
-    
+
     @Override
     public Result<ClaimToken> verifyJwtToken(String participantContextId, TokenRepresentation tokenRepresentation, VerificationContext verificationContext) {
         var token = tokenRepresentation.getToken();
-//        token = token.replace("Bearer ", "").trim();
         tokenRepresentation = tokenRepresentation.toBuilder().token(token).build();
+
+        /// tokenRepresentation.getToken() tem ja que chegar no formato x.x.x
 
         var claimTokenResult = tokenValidationAction.validate(participantContextId, tokenRepresentation);
 
-        var tokenParsed = typeManager.readValue(token, Map.class);
-
-        if (tokenParsed.containsKey(VC_CLAIM)) {
-            var credentials = typeManager.getMapper().convertValue(tokenParsed.get(VC_CLAIM), new TypeReference<List<VerifiableCredential>>(){});
-            var claimToken = ClaimToken.Builder.newInstance()
-                    .claim(VC_CLAIM, credentials)
-                    .build();
-            return Result.success(claimToken);
+        if (claimTokenResult.failed()) {
+            return claimTokenResult.mapEmpty();
         }
-        return Result.failure(format("Expected %s claim, but token did not contain them", VC_CLAIM));
-    }
-    
-    private VerifiableCredential membershipCredential() {
-        return VerifiableCredential.Builder.newInstance()
-                .type("VerifiableCredential")
-                .type("MembershipCredential")
-                .credentialSubject(CredentialSubject.Builder.newInstance()
-                        .id(did)
-                        .claim("holderIdentifier", businessPartnerNumber)
-                        .build())
-                .issuer(new Issuer("issuer", Map.of()))
-                .issuanceDate(Instant.now())
+
+        var claimToken = claimTokenResult.getContent();
+
+        var credentials = List.of(membershipCredential(), dataExchangeGovernanceCredential());
+
+        var claimTokenWithVc = ClaimToken.Builder.newInstance()
+                .claims(claimToken.getClaims())
+                .claim(VC_CLAIM, credentials)
                 .build();
+
+        return Result.success(claimTokenWithVc);
+
+//        var accessToken = claimToken.getStringClaim(PRESENTATION_TOKEN_CLAIM);
+//        var issuer = claimToken.getStringClaim(ISSUER);
+//
+//        var myOwnDid = didResolver.apply(participantContextId);
+//        var requestedScopes = context.getScopes().stream().toList();
+//        return Result.failure(format("Expected %s claim, but token did not contain them", VC_CLAIM));
+    }
+
+
+    private String getTestToken(String aud) {
+        var header = Map.of(
+                "alg", "ES256K",
+                "typ", "JWT",
+                "kid", did + "#key-1"
+        );
+
+        var now = Instant.now();
+        var payload = new java.util.HashMap<String, Object>();
+        payload.put("iss", did);
+        payload.put("sub", did);
+        payload.put("aud", aud);
+        payload.put("exp", now.plusSeconds(3600).getEpochSecond());
+        payload.put("iat", now.getEpochSecond());
+        payload.put("token", "test-token");
+
+        var signature = "TESTsignature";
+
+        String headerJson = typeManager.writeValueAsString(header);
+        String payloadJson = typeManager.writeValueAsString(payload);
+
+        String encodedHeader = Base64.getUrlEncoder().withoutPadding().encodeToString(headerJson.getBytes());
+        String encodedToken = Base64.getUrlEncoder().withoutPadding().encodeToString(payloadJson.getBytes());
+        String encodedSignature = Base64.getUrlEncoder().withoutPadding().encodeToString(signature.getBytes());
+
+        return (encodedHeader + "." + encodedToken + "." + encodedSignature);
     }
 
     private VerifiableCredential dataExchangeGovernanceCredential() {
@@ -112,6 +145,19 @@ public class MockVcIdentityService implements IdentityService {
                         .id(did)
                         .claim("holderIdentifier", businessPartnerNumber)
                         .claim("contractVersion", "1.0")
+                        .build())
+                .issuer(new Issuer("issuer", Map.of()))
+                .issuanceDate(Instant.now())
+                .build();
+    }
+
+    private VerifiableCredential membershipCredential() {
+        return VerifiableCredential.Builder.newInstance()
+                .type("VerifiableCredential")
+                .type("MembershipCredential")
+                .credentialSubject(CredentialSubject.Builder.newInstance()
+                        .id(did)
+                        .claim("holderIdentifier", businessPartnerNumber)
                         .build())
                 .issuer(new Issuer("issuer", Map.of()))
                 .issuanceDate(Instant.now())

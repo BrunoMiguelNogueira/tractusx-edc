@@ -20,21 +20,23 @@
 
 package org.eclipse.tractusx.edc.tests;
 
-import org.eclipse.edc.iam.decentralizedclaims.spi.validation.TokenValidationAction;
 import org.eclipse.edc.iam.did.spi.resolution.DidPublicKeyResolver;
 import org.eclipse.edc.jwt.validation.jti.JtiValidationStore;
-import org.eclipse.edc.keys.spi.PublicKeyResolver;
 import org.eclipse.edc.runtime.metamodel.annotation.Inject;
 import org.eclipse.edc.spi.iam.IdentityService;
 import org.eclipse.edc.spi.system.ServiceExtension;
 import org.eclipse.edc.spi.system.ServiceExtensionContext;
-import org.eclipse.edc.token.spi.TokenValidationService;
+import org.eclipse.edc.token.spi.TokenValidationRule;
+import org.eclipse.edc.verifiablecredentials.jwt.rules.HasSubjectRule;
+import org.eclipse.edc.verifiablecredentials.jwt.rules.IssuerEqualsSubjectRule;
+import org.eclipse.edc.verifiablecredentials.jwt.rules.IssuerKeyIdValidationRule;
+import org.eclipse.edc.verifiablecredentials.jwt.rules.JtiValidationRule;
+import org.eclipse.edc.verifiablecredentials.jwt.rules.SubJwkIsNullRule;
+import org.eclipse.edc.verifiablecredentials.jwt.rules.TokenNotNullRule;
+
+import java.util.List;
 
 public class MockIdentityServiceExtension implements ServiceExtension {
-
-    @Inject
-    private TokenValidationService tokenValidationService;
-
     @Inject
     private IdentityService identityService;
 
@@ -54,7 +56,9 @@ public class MockIdentityServiceExtension implements ServiceExtension {
 
     @Override
     public void initialize(ServiceExtensionContext context) {
-        var mockTokenValidationAction = new MockTokenValidationAction(tokenValidationService, didPublicKeyResolver, jtiValidationStore);
+
+        var mockTokenValidationService = new MockTokenValidationService();
+        var mockTokenValidationAction = new MockTokenValidationAction(mockTokenValidationService, didPublicKeyResolver, jtiValidationStore);
         var mockVcIdentityService = new MockVcIdentityService(bpn, did, mockTokenValidationAction);
         context.registerService(IdentityService.class, mockVcIdentityService);
     }
