@@ -46,7 +46,6 @@ public class MockTokenValidationAction implements TokenValidationAction {
     private final TokenValidationService tokenValidationService;
     private final PublicKeyResolver publicKeyResolver;
     private final JtiValidationStore jtiValidationStore;
-    private final ArrayList<TokenValidationRule> rules = new ArrayList<>();
     private final Clock clock = Clock.systemUTC();
 
     public MockTokenValidationAction(TokenValidationService tokenValidationService, PublicKeyResolver publicKeyResolver, JtiValidationStore jtiValidationStore) {
@@ -59,6 +58,7 @@ public class MockTokenValidationAction implements TokenValidationAction {
         try {
             var signedJwt = SignedJWT.parse(tokenRepresentation.getToken());
             var keyId = signedJwt.getHeader().getKeyID();
+            var rules = new ArrayList<TokenValidationRule>();
 
             rules.add(new IssuerEqualsSubjectRule());
             rules.add(new SubJwkIsNullRule());
