@@ -21,6 +21,10 @@ plugins {
     java
 }
 
+//configurations.all {
+//    exclude("org.eclipse.edc", "decentralized-claims-core")
+//}
+
 dependencies {
     testImplementation(testFixtures(project(":edc-tests:e2e-fixtures")))
     testImplementation(libs.edc.junit)
